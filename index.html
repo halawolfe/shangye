@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="src/snake.css"/>
+    <script src="src/snake.js"></script>
+</head>
+<body>
+<p>Score:<span id="score">0</span></p>
+<div id="gridPanel">
+</div>
+
+<div id="model" >
+    <div ><!--半透明灰色背景--></div>
+    <p ><!--居中小窗口-->
+        <a class="button" onclick="game.common()" id="m1">普通模式</a><br>
+        <a class="button" onclick="game.checkpoints()" id="m2">过关模式</a><br>
+        <a class="button" onclick="game.barrier()" id="m3">躲避模式</a>
+    </p>
+</div>
+
+<div id="gameOver" class="container"><!--同时包含前景和背景的容器-->
+    <div class="huibg"><!--半透明灰色背景--></div>
+    <p class="p"><!--居中小窗口-->
+        Game Over!<br>
+        Score:<span id="finalScore"></span><br>
+        <a class="button" onclick="game.start()">Try again!</a>
+    </p>
+</div>
+
+<div id="pause" class="container"><!--同时包含前景和背景的容器-->
+    <div class="huibg"><!--半透明灰色背景--></div>
+    <p class="p"><!--居中小窗口-->
+        PAUSE!<br>
+        Score:<span id="pauseScore"></span><br>
+        <a class="button" onclick="game.cancelPause()">Cancel pause!</a>
+    </p>
+</div>
+
+<div id="checkpoints" class="container"><!--同时包含前景和背景的容器-->
+    <div class="huibg"><!--半透明灰色背景--></div>
+    <p class="p"><!--居中小窗口-->
+        PASS!<br>
+        <span id="pass"></span><br>
+        <a class="button" onclick="game.nextPoint()">下一关</a>
+    </p>
+</div>
+
+<div id="barrier" class="container"><!--同时包含前景和背景的容器-->
+    <div class="huibg"><!--半透明灰色背景--></div>
+    <p class="p"><!--居中小窗口-->
+        PASS!<br>
+        <span id="pass2"></span><br>
+        <a class="button" onclick="game.nextBarrier()">下一关</a>
+    </p>
+</div>
+
+<div id="good" class="container"><!--同时包含前景和背景的容器-->
+    <div class="huibg"><!--半透明灰色背景--></div>
+    <p class="p"><!--居中小窗口-->
+        PASS! PASS!<br>
+        Score:<span id="finalScore1"></span><br>
+        <a class="button" onclick="game.model()">重新选择模式</a>
+    </p>
+</div>
+</body>
+</html>
