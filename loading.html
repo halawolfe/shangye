@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .container{
+            margin:100px;
+            position:absolute;
+        }
+        .full{
+            left:30px;
+            top:30px;
+            position:absolute;
+            border: 60px solid rgb(251, 139, 189);
+            border-left-color: rgb(255, 41, 140);
+            border-bottom-color: rgb(255, 41, 140);
+            border-radius: 60px;
+            width:0;
+            height:0;
+        }
+        .half-left{
+            left:30px;
+            top:30px;
+            position:absolute;
+            width:0;
+            height:0;
+            border:60px solid rgb(251, 139, 189);
+            border-radius:60px;
+            border-left-color:transparent;
+            border-bottom-color:transparent;
+            z-index:3;
+            animation:half-left .8s linear infinite;
+        }
+        .half-right{
+            left:30px;
+            top:30px;
+            position:absolute;
+            width:0;
+            height:0;
+            border:60px solid rgb(255, 41, 140);
+            border-radius:60px;
+            border-left-color:transparent;
+            border-bottom-color:transparent;
+            z-index:2;
+            animation:half-right .8s linear infinite;
+        }
+        .ring{
+            position:absolute;
+            width:180px;
+            height:180px;
+            border-radius:90px;
+            border:2px solid rgb(255,41,140);
+            border-top-color:transparent;
+            animation:ring .8s linear infinite;
+        }
+        @keyframes ring{
+            0%{
+                transform:rotate(0deg);
+            }
+            100%{
+                transform:rotate(360deg);
+            }
+        }
+        @keyframes half-left{
+            0%{
+                transform:rotate(0deg);
+            }
+            25%{
+                transform:rotate(180deg);
+            }
+            50%{
+                transform:rotate(180deg);
+                z-index:3;
+            }
+            75%{
+                transform:rotate(360deg);
+                z-index:3;
+            }
+            100%{
+                transform:rotate(360deg);
+            }
+        }
+        @keyframes half-right{
+            0%{
+                transform:rotate(0deg);
+                z-index:3;
+            }
+            25%{
+                transform:rotate(0deg);
+                z-index:3;
+            }
+            25.0001%{
+                transform:rotate(0deg);
+                z-index:2;
+            }
+            50%{
+                transform:rotate(180deg);
+                z-index:2;
+            }
+            75%{
+                transform:rotate(180deg);
+                z-index:2;
+            }
+            75.001%{
+                transform:rotate(180deg);
+                z-index:3;
+            }
+            100%{
+                transform:rotate(360deg);
+                z-index:3;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="full"></div>
+    <div class="half-left"></div>
+    <div class="half-right"></div>
+    <div class="ring"></div>
+</div>
+</body>
+</html>
