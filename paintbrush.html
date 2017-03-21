@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #canvas{
+            margin:0 auto;
+        }
+        #container{
+            /*margin:0 auto;*/
+            width:600px;
+        }
+        .color-btn{
+            float:left;
+            width:40px;
+            height:40px;
+            margin:10px 10px 20px 0;
+            cursor:pointer;
+            border:5px solid white;
+            border-radius:5px;
+        }
+        .color-btn:hover{
+            border:5px solid violet;
+        }
+        .color-btn-selected{
+            border:5px solid blueviolet;
+        }
+        #black{
+            background-color:black;
+        }
+        #red{
+            background-color:red;
+        }
+        #blue{
+            background-color:blue;
+        }
+        #green{
+            background-color:green;
+        }
+        #yellow{
+            background-color:yellow;
+        }
+        #orange{
+            background-color:orange;
+        }
+        .tool-btn{
+            float:right;
+            width:50px;
+            height:50px;
+            background-color:#3bd;
+            margin:10px 10px 20px 0;
+            cursor:pointer;
+            border:5px solid white;
+        }
+        .tool-btn-selected{
+            border:5px solid blueviolet;
+        }
+        .tool-btn:hover{
+            border:5px solid violet;
+        }
+
+
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div id="container">
+    <div class="color-btn color-btn-selected" id="black"></div>
+    <div class="color-btn" id="blue"></div>
+    <div class="color-btn" id="red"></div>
+    <div class="color-btn" id="green"></div>
+    <div class="color-btn" id="yellow"></div>
+    <div class="color-btn" id="orange"></div>
+    <button class="tool-btn" id="eraser">橡皮檫</button>
+    <button class="tool-btn" id="brush">刷子</button>
+    <button class="tool-btn" id="gun">喷枪</button>
+    <button class="tool-btn tool-btn-selected" id="peen">画笔</button>
+</div>
+<script src="jquery-1.11.3.js"></script>
+<script>
+    var canvasWidth=600;
+    var canvasHeight=canvasWidth;
+    var canvas=document.getElementById("canvas");
+    var ctx=canvas.getContext("2d");
+    canvas.width=canvasHeight;
+    canvas.height=canvasWidth;
+    var isMouseDown=false;
+    var lastLoc={x:0,y:0};
+    var lastTimestamp=0;
+    var lastLineWidth=-1;
+    var strokeColor="black";
+    var tool=peen;
+    function drawBackground(){
+        ctx.beginPath();
+        ctx.moveTo(3,3);
+        ctx.lineTo(canvasWidth-3,3);
+        ctx.lineTo(canvasWidth-3,canvasHeight-3);
+        ctx.lineTo(3,canvasHeight-3);
+        ctx.closePath();
+        ctx.lineWidth=6;
+        ctx.stroke();
+    }
+    canvas.onmousedown=function(e){
+        e.preventDefault();
+        isMouseDown=true;
+        lastLoc=windowToCanvas(e.clientX, e.clientY);
+        lastTimestamp=new Date().getTime();
+        if(tool==gun){
+            gun(lastLoc);
+        }
+    }
+    canvas.onmouseup=function(e){
+        e.preventDefault();
+        isMouseDown=false;
+        console.log("up");
+        if(tool==eraser){
+            ctx.clearRect(lastLoc.x-17,lastLoc.y-17,35,35);
+        }
+    }
+    canvas.onmouseout=function(e){
+        e.preventDefault();
+        isMouseDown=false;
+        console.log("out");
+        if(tool==eraser){
+            ctx.clearRect(lastLoc.x-17,lastLoc.y-17,35,35);
+        }
+    }
+    canvas.onmousemove=function(e){
+        e.preventDefault();
+        if(isMouseDown==true){
+            console.log("move");
+            var curLoc=windowToCanvas(e.clientX, e.clientY);
+            var curTimestamp=new Date().getTime();
+            var s=distance(curLoc,lastLoc);
+            var t=curTimestamp-lastTimestamp;
+            var lineWidth=calclineWidth(t,s);
+            if(tool==eraser){
+                eraser(lastLoc,curLoc);
+                lastLoc=curLoc;
+            }else if(tool==gun){
+                gun(curLoc);
+            }else if(tool==brush){
+                brush(lastLoc,curLoc,lineWidth);
+                lastLoc=curLoc;
+                lastTimestamp=curTimestamp;
+                lastLineWidth=lineWidth;
+            }else{
+                ctx.globalAlpha=1;
+                ctx.beginPath();
+                ctx.moveTo(lastLoc.x,lastLoc.y);
+                ctx.lineTo(curLoc.x,curLoc.y);
+                ctx.strokeStyle=strokeColor;
+                ctx.lineWidth=lineWidth;
+                ctx.lineCap="round";
+                ctx.lineJoin="round";
+                ctx.stroke();
+                lastLoc=curLoc;
+                lastTimestamp=curTimestamp;
+                lastLineWidth=lineWidth;
+            }
+        }
+    }
+    function eraser(lastLoc,curLoc){
+        ctx.clearRect(lastLoc.x-17,lastLoc.y-17,20,20);
+        drawBackground();
+        ctx.strokeStyle="black";
+        ctx.globalAlpha=1;
+        ctx.lineWidth=1;
+        ctx.strokeRect(curLoc.x-15,curLoc.y-15,15,15);
+    }
+    function brush(lastLoc,curLoc,lineWidth){
+        ctx.globalAlpha=1;
+        ctx.beginPath();
+        ctx.moveTo(lastLoc.x,lastLoc.y);
+        ctx.lineTo(curLoc.x,curLoc.y);
+        ctx.strokeStyle=strokeColor;
+        ctx.lineWidth=lineWidth;
+        ctx.lineCap="square";
+        ctx.lineJoin="bevel";
+        ctx.stroke();
+    }
+    function gun(curLoc){
+        var randomNum=Math.random()*15;
+        for(var i=0;i<10;i++){
+            ctx.fillStyle=strokeColor;
+            ctx.beginPath();
+            ctx.globalAlpha=0.1;
+            ctx.arc(curLoc.x+randomNum,curLoc.y+randomNum,1,0,2*Math.PI);
+            ctx.fill();
+        }
+    }
+    function windowToCanvas(x,y){
+        var bbox=canvas.getBoundingClientRect()
+        return({x:Math.round(x-bbox.left),y:Math.round(y-bbox.top)});
+    }
+    function distance(loc1,loc2){
+        return Math.sqrt((loc1.x-loc2.x)*(loc1.x-loc2.x)+(loc1.y-loc2.y)*(loc1.y-loc2.y));
+    }
+    var maxWidth=20;
+    var minWidth=1;
+    var maxV=10;
+    var minV=0.1;
+    function calclineWidth(t,s){
+        var v=s/t;
+        var resultLineWidth;
+        if(v<=minV)
+            resultLineWidth=maxWidth;
+        else if(v>=maxV)
+            resultLineWidth=minWidth;
+        else
+            resultLineWidth=maxWidth-(v-minV)/(maxV-minV)*(maxWidth-minWidth);
+        if(lastLineWidth==-1)
+            return resultLineWidth;
+        return resultLineWidth*1/3+lastLineWidth*2/3;
+    }
+    $(".color-btn").click(function(e){
+            $(".color-btn").removeClass("color-btn-selected");
+            $(this).addClass("color-btn-selected");
+            strokeColor=$(this).css("background-color");
+        }
+    )
+    $(".tool-btn").click(function(e){
+        $(".tool-btn").removeClass("tool-btn-selected");
+        $(this).addClass("tool-btn-selected");
+    });
+    $("#peen").click(function(){
+        tool=peen;
+    });
+    $("#eraser").click(function(){
+        tool=eraser;
+        console.log("eraser");
+    });
+    $("#brush").click(function(){
+        tool=brush;
+    });
+    $("#gun").click(function(){
+        tool=gun;
+    });
+    drawBackground();
+</script>
+</body>
+</html>
