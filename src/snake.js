@@ -257,7 +257,7 @@ game={
         //是否躲避模式
         if(this.type==this.barrier){
             if(this.state==this.RUNNING){
-                if(this.snakeBody.length==100){
+                if(this.snakeBody.length==50){
                     this.point++;
                     //清除定时器
                     clearInterval(this.timer);
@@ -275,7 +275,7 @@ game={
             //是否游戏进行中
             if(this.state==this.RUNNING){
                 //蛇身达到一定长度
-                if(this.snakeBody.length==100){
+                if(this.snakeBody.length==50){
                     this.point++;
                     //是否成功通过过关模式
                     if(this.point>this.interval2.length-1){
