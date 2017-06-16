@@ -1,13 +1,14 @@
 @charset "utf-8";
-#gridPanel{width:616px;height:548px;
+#gridPanel{
+    width:616px;height:616px;
     margin:0 auto;
     background-color:#eee;
     /*border-radius:10px;*/
     position:relative;
     border:2px solid #aaa;
 }
-.grid{width:30px; height:30px;
-    /*border-radius:6px;*/
+.grid{
+    width:30px; height:30px;
     background-color:#ddd;
     margin:4px 0 0 4px;
     float:left;
@@ -23,11 +24,18 @@
 }
 
 /*分数显示*/
-p{width:480px; margin:0 auto;
+p{
+    width:100%; margin:0 auto;
     font-family:Arial;font-weight:bold;
-    font-size:40px; padding-top:15px;
+    font-size:40px; padding:15px 0;
+    text-align:center;
 }
-
+#stop,#over{
+    font-size:30px;
+    padding:10px; border-radius:6px;
+    background-color:#9f8b77; color:#fff;
+    cursor:pointer;
+}
 .container{width:100%; height:100%;
     position:absolute; top:0; left:0;
     display:none;
@@ -47,7 +55,14 @@ p{width:480px; margin:0 auto;
     background-color:#9f8b77; color:#fff;
     cursor:pointer;
 }
-
+#gameOver>p{
+    height:280px;
+}
+#gameOver>p>a{
+    font-size:30px;
+    padding:10px 50px;
+    /*display:block;*/
+}
 #model{
     width:100%;
     height:100%;
