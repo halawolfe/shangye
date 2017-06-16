@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,
+        height=device-height,
+        initial-scale=1.0,
+        minimum-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=1.0"/>
     <title>Title</title>
     <link rel="stylesheet" href="src/snake.css"/>
     <script src="src/snake.js"></script>
+    <script src="jquery-1.11.3.js"></script>
 </head>
 <body>
 <p>Score:<span id="score">0</span></p>
-<div id="gridPanel">
-</div>
-
+<div id="gridPanel"></div>
+<p><a id="stop" onclick="game.pause()">暂停游戏</a>&nbsp;&nbsp;<a id="over" onclick="game.gameOver()">结束游戏</a></p>
 <div id="model" >
     <div ><!--半透明灰色背景--></div>
     <p ><!--居中小窗口-->
@@ -26,6 +33,7 @@
         Game Over!<br>
         Score:<span id="finalScore"></span><br>
         <a class="button" onclick="game.start()">Try again!</a>
+        <a class="button" onclick="game.model()">返回主菜单</a>
     </p>
 </div>
 
@@ -61,7 +69,7 @@
     <p class="p"><!--居中小窗口-->
         PASS! PASS!<br>
         Score:<span id="finalScore1"></span><br>
-        <a class="button" onclick="game.model()">重新选择模式</a>
+        <a class="button" onclick="game.model()">返回主菜单</a>
     </p>
 </div>
 </body>
